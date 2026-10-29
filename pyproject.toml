@@ -1,0 +1,35 @@
+[project]
+name = "messenger"
+version = "0.1.0"
+description = "Messenger Backend"
+readme = "README.md"
+authors = [
+    { name = "RomaSamsonov", email = "samsonovroma2011@gmail.com" }
+]
+requires-python = ">=3.13"
+dependencies = [
+    "bcrypt>=5.0.0",
+    "beanie>=2.2.0",
+    "fastapi-swagger>=0.4.64",
+    "fastapi[standard]>=0.149.0",
+    "motor>=3.7.1",
+    "passlib[bcrypt]>=1.7.4",
+    "pwdlib[argon2]>=0.3.1",
+    "pydantic-settings>=2.16.0",
+    "pydantic[email]>=2.14.1",
+    "pyjwt>=2.15.1",
+    "pymongo>=4.9",
+    "python-jose[cryptography]>=3.5.0",
+    "uvicorn>=0.54.0",
+]
+
+[tool.uv]
+package = false
+
+[dependency-groups]
+dev = [
+    "httpx>=0.28.1",
+    "mypy>=2.4.0",
+    "pytest>=9.1.1",
+    "ruff>=0.17.1",
+]
