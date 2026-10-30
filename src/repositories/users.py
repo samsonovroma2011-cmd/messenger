@@ -1,18 +1,18 @@
 import re
-from src.models.users import User
+from src.models.users import Users
 from src.repositories.base import BaseRepository
 
 
-class UsersRepository(BaseRepository[User]):
+class UsersRepository(BaseRepository[Users]):
     def __init__(self):
-        super().__init__(model=User)
+        super().__init__(model=Users)
 
     async def get_users(
             self,
             user_name: str | None = None,
             nick_name: str | None = None,
             email: str | None = None
-    ) -> list[User]:
+    ) -> list[Users]:
         filters = {}
 
         if user_name:

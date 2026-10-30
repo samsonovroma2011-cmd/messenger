@@ -4,7 +4,7 @@ from pydantic import EmailStr, Field
 from datetime import datetime, timezone
 
 
-class User(Document):
+class Users(Document):
     nick_name: str
     user_name: Annotated[str, Indexed(unique=True)]
     email: Annotated[EmailStr, Indexed(unique=True)]

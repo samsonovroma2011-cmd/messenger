@@ -1,5 +1,5 @@
 from src.repositories.users import UsersRepository
-from src.models.users import User
+from src.models.users import Users
 from src.schemas.users import UserCreate, UserUpdate
 from src.security import security
 
@@ -12,20 +12,20 @@ class UsersService:
             user_name: str,
             nick_name: str,
             email: str
-    ) -> list[User]:
+    ) -> list[Users]:
         return await self.db.get_users(
             user_name=user_name,
             nick_name=nick_name,
             email=email
         )
 
-    async def register_user(self, user_data: UserCreate) -> User:
+    async def register_user(self, user_data: UserCreate) -> Users:
         data = user_data.model_dump()
         password = data.pop("password")
         data["hashed_password"] = security.get_password_hash(password)
         return await self.db.add(data)
 
-    async def login_user(self, user_name: str, password: str) -> tuple[User, str] | None:
+    async def login_user(self, user_name: str, password: str) -> tuple[Users, str] | None:
         user = await self.db.get_one(user_name=user_name)
         if not user:
             return None
@@ -39,6 +39,6 @@ class UsersService:
     async def delete_user(self, id: str):
         await self.db.delete(id)
 
-    async def update_user(self, id: str, data: UserUpdate) -> User | None:
+    async def update_user(self, id: str, data: UserUpdate) -> Users | None:
         await self.db.edit(id, data.model_dump())
         return await self.db.get_by_id(id)
