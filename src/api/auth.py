@@ -1,6 +1,7 @@
-from fastapi import APIRouter, status
+from fastapi import APIRouter, status, Depends, HTTPException
+from fastapi.security import OAuth2PasswordRequestForm
 from src.api.dependencies import ServicesDep, CurrentUserDep
-from src.schemas.users import UserCreate, UserResponse, UserLogin, TokenResponse
+from src.schemas.users import UserCreate, UserResponse, TokenResponse
 
 router = APIRouter(prefix="/auth", tags=["Авторизация и аутентификация"])
 
@@ -20,15 +21,22 @@ async def register_user(
     response_model=TokenResponse
 )
 async def login_user(
-        user_data: UserLogin,
-        service: ServicesDep
+        service: ServicesDep,
+        user_data: OAuth2PasswordRequestForm = Depends()
 ) -> TokenResponse:
-    result = await service.users.authenticate_user(user_data.email, user_data.password)
+    result = await service.users.login_user(user_data.username, user_data.password)
+
+    if not result:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Incorrect username or password",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
 
     user, token = result
     return TokenResponse(
         access_token=token,
-        user=user
+        user=UserResponse(**user.model_dump())
     )
 
 @router.get(

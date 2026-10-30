@@ -8,9 +8,13 @@ router = APIRouter(prefix="/users", tags=["Пользователи"])
 @router.get("/", response_model=list[UserResponse])
 async def get_users(
         service: ServicesDep,
-        filters: UserFilter = Query()
+        search_users: UserFilter = Query()
 ) -> list[UserResponse]:
-    return await service.users.get_users(**filters.model_dump(exclude_none=True))
+    return await service.users.get_users(
+        user_name=search_users.user_name,
+        nick_name=search_users.nick_name,
+        email=search_users.email
+    )
 
 @router.get("/{user_id}", response_model=UserResponse)
 async def get_user(
@@ -18,6 +22,8 @@ async def get_user(
         user_id: str
 ) -> UserResponse:
     return await service.users.get_by_id(user_id)
+
+
 
 @router.patch("/me", response_model=UserResponse)
 async def update_user(
