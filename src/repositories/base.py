@@ -27,5 +27,9 @@ class BaseRepository(Generic[ModelType]):
     async def delete(self, id: str) -> None:
         await self.model.delete_one({"_id": PydanticObjectId(id)})
 
-    async def edit(self, id: str, data: dict) -> None:
-        await self.model.update_one({"_id": PydanticObjectId(id)}, {"$set": data})
+    async def edit(self, id: str, data: dict) -> ModelType | None:
+        updated_doc = await self.model.find_one(
+            {"_id": PydanticObjectId(id)}
+        ).update(data, response_type="document")
+
+        return updated_doc

@@ -27,3 +27,6 @@ class UsersRepository(BaseRepository[Users]):
 
         users = await self.model.find(filters).limit(50).to_list()
         return users
+
+    async def get_users_by_ids(self, users: list[str]) -> list[Users]:
+        return await self.model.find({"_id": {"$in": users}}).to_list()
