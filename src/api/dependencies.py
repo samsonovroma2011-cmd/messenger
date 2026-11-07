@@ -1,6 +1,8 @@
 from typing import Annotated
 from fastapi import Depends
 from fastapi.security import OAuth2PasswordBearer
+from src.repositories.chats import ChatsRepository
+from src.services.chats import ChatsService
 from src.models.users import Users
 from src.services.users import UsersService
 from src.repositories.users import UsersRepository
@@ -10,9 +12,10 @@ from src.security import security
 class Services:
     def __init__(self):
         self.users_repository = UsersRepository()
-
+        self.chats_repository = ChatsRepository()
 
         self.users = UsersService(self.users_repository)
+        self.chats = ChatsService(self.chats_repository, self.users_repository)
 
 
 def get_services():

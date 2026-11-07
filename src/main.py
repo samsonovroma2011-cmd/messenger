@@ -6,6 +6,7 @@ from fastapi_swagger import patch_fastapi
 from src.database import mongo_connector
 from src.api.users import router as users_router
 from src.api.auth import router as auth_router
+from src.api.chats import router as chats_router
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -14,6 +15,7 @@ async def lifespan(app: FastAPI):
     mongo_connector.disconnect()
 
 app = FastAPI(
+    title="Messenger API",
     lifespan=lifespan,
     docs_url=None,
 )
@@ -31,6 +33,7 @@ async def custom_swagger_ui_html():
 
 app.include_router(users_router)
 app.include_router(auth_router)
+app.include_router(chats_router)
 
 if __name__ == "__main__":
     import uvicorn
