@@ -3,7 +3,7 @@ from fastapi import Depends
 from fastapi.security import OAuth2PasswordBearer
 from src.repositories.chats import ChatsRepository
 from src.services.chats import ChatsService
-from src.models.users import Users
+from src.models.users import User
 from src.services.users import UsersService
 from src.repositories.users import UsersRepository
 from src.security import security
@@ -27,7 +27,7 @@ ServicesDep = Annotated[Services, Depends(get_services)]
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
 
 class CurrentUser:
-    async def __call__(self, token: str = Depends(oauth2_scheme)) -> Users:
+    async def __call__(self, token: str = Depends(oauth2_scheme)) -> User:
         payload = security.decode_token(token)
 
         user_id: str = payload.get("sub")
@@ -39,4 +39,4 @@ class CurrentUser:
 get_current_user = CurrentUser()
 
 
-CurrentUserDep = Annotated[Users, Depends(get_current_user)]
+CurrentUserDep = Annotated[User, Depends(get_current_user)]

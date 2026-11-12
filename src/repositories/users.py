@@ -1,18 +1,18 @@
 import re
-from src.models.users import Users
+from src.models.users import User
 from src.repositories.base import BaseRepository
 
 
-class UsersRepository(BaseRepository[Users]):
+class UsersRepository(BaseRepository[User]):
     def __init__(self):
-        super().__init__(model=Users)
+        super().__init__(model=User)
 
     async def get_users(
             self,
             user_name: str | None = None,
             nick_name: str | None = None,
             email: str | None = None
-    ) -> list[Users]:
+    ) -> list[User]:
         filters = {}
 
         if user_name:
@@ -28,5 +28,5 @@ class UsersRepository(BaseRepository[Users]):
         users = await self.model.find(filters).limit(50).to_list()
         return users
 
-    async def get_users_by_ids(self, users: list[str]) -> list[Users]:
+    async def get_users_by_ids(self, users: list[str]) -> list[User]:
         return await self.model.find({"_id": {"$in": users}}).to_list()

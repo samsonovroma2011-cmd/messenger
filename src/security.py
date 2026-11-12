@@ -22,7 +22,7 @@ class Security:
             minutes=self.settings.ACCESS_TOKEN_EXPIRE_MINUTES
         )
 
-        to_encode |= {"exp":expire}
+        to_encode |= {"exp": expire}
 
         return jwt.encode(
             to_encode,

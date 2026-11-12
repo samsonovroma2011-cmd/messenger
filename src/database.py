@@ -1,6 +1,6 @@
 from pymongo import AsyncMongoClient
-from src.models.chats import Chats
-from src.models.users import Users
+from src.models.chats import Chat
+from src.models.users import User
 from src.config import settings
 from beanie import init_beanie
 
@@ -13,7 +13,7 @@ class MongoConnector:
     async def connect(self):
         await init_beanie(
             database=self.db,
-            document_models=[Users, Chats]
+            document_models=[User, Chat]
         )
         print(f"✅ Подключено к mongo db: {settings.MONGO_NAME}")
 

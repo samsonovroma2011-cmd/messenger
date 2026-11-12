@@ -2,7 +2,7 @@ from datetime import datetime, timezone
 from beanie import Document
 from pydantic import Field
 
-class Chats(Document):
+class Chat(Document):
     chat_type: str = Field(default="private")
     users_ids: list[str]
     owner_id: str
